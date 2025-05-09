@@ -20,18 +20,6 @@ def home():
 
 @app.route("/webhook", methods=['POST'])
 
-def webhook():
-    signature = request.headers.get('X-Line-Signature', '')
-    body = request.get_data(as_text=True)
-    hash = hmac.new(channel_secret.encode('utf-8'), body.encode('utf-8'), hashlib.sha256).digest()
-    computed_signature = base64.b64encode(hash).decode()
-
-    if not hmac.compare_digest(computed_signature, signature):
-        abort(400)
-
-    # 處理事件邏輯
-    return 'OK'
-
 def callback():
     # get X-Line-Signature header value
     signature = request.headers['X-Line-Signature']
